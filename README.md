@@ -1,4 +1,4 @@
-parla
+Parla
 =====
 Zipf's law demo
 
