@@ -19,5 +19,9 @@ def parse(path):
                 w = w.strip(",.:;-'\"?¿!¡»«")
                 w = w.lower()
                 words[w] = words.get(w, 0) + 1
-    
-    return sorted(words.iteritems(), key=operator.itemgetter(1), reverse=True)
+    return _interpret(words)
+
+
+def _interpret(words_dict):
+     words = sorted(words_dict.iteritems(), key=operator.itemgetter(1), reverse=True)
+     return words
