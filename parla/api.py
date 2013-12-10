@@ -33,3 +33,6 @@ def summary(result):
     total_unique_words = len(result)
     print("Number of words: {0}".format(total_words))
     print("Number of unique words: {0}".format(total_unique_words))
+    print("Top ten:")
+    for i in range(10):
+        print("{0} - {1} - {2} - {3}")
