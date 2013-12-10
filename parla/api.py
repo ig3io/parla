@@ -27,3 +27,9 @@ def parse(path):
 def _interpret(words_dict):
      words = sorted(words_dict.iteritems(), key=operator.itemgetter(1), reverse=True)
      return words
+
+def summary(result):
+    total_words = sum(r[1] for r in result)
+    total_unique_words = len(result)
+    print("Number of words: {0}".format(total_words))
+    print("Number of unique words: {0}".format(total_unique_words))
