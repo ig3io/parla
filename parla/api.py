@@ -4,6 +4,7 @@ import os
 import codecs
 import operator
 
+TRIM_STRING = ",.:;-'\"?¿!¡»«"
 
 def parse(path):
     if not os.path.exists(path):
@@ -16,8 +17,8 @@ def parse(path):
         for line in f:
             for w in line.split():
                 w = w.strip()  # Remove whitespace
-                w = w.strip(",.:;-'\"?¿!¡»«")
-                w = w.lower()
+                w = w.strip(TRIM_STRING)  # Extra chars to trim
+                w = w.lower()  # Case insensitive
                 words[w] = words.get(w, 0) + 1
     return _interpret(words)
 
