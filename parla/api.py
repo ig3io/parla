@@ -35,4 +35,5 @@ def summary(result):
     print("Number of unique words: {0}".format(total_unique_words))
     print("Top ten:")
     for i in range(10):
-        print("{0} - {1} - {2} - {3}")
+        w = result[i]
+        print("{0} - {1} - {2} - {3}%".format(i, w[0], w[1], 100.0*float(w[1])/float(total_words)))
