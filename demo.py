@@ -16,6 +16,7 @@ def main():
     x = range(20)
     y = [word[1] for word in result[:20]]
     plt.plot(x, y)
+    plt.savefig("result.png")
 
 if __name__ == "__main__":
     main()
