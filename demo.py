@@ -13,8 +13,8 @@ def main():
         for r in result:
             f.write(u"{0}: {1}\n".format(r[0], r[1]))
     parla.summary(result)
-    x = range(20)
-    y = [word[1] for word in result[:20]]
+    x = range(100)
+    y = [word[1] for word in result[:100]]
     plt.plot(x, y)
     plt.savefig("result.png")
 
