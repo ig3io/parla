@@ -4,36 +4,69 @@ from __future__ import unicode_literals
 import os
 import codecs
 import operator
+import matplotlib.pyplot as plt
 
-TRIM_STRING = ",.:;-'\"?¿!¡»«"
 
-def parse(path):
-    if not os.path.exists(path):
-        raise IOError("Cannot access the file {0}".format(path))
+class Zipf(object):
 
-    words = {}
-    # This allows us to read line by line without buffering the
-    # entire file
-    with codecs.open(path, "r", "utf-8-sig", "utf-8") as f:
-        for line in f:
-            for w in line.split():
-                w = w.strip()  # Remove whitespace
-                w = w.strip(TRIM_STRING)  # Extra chars to trim
-                w = w.lower()  # Case insensitive
+    def __init__(self, path):
+        self.result = []
+        self.path = path
+        self.result = Zipf.parse(self.path)
+
+    @staticmethod
+    def parse(path):
+        trim_string = ",.:;-'\"?¿!¡»«"
+        if not os.path.exists(path):
+            raise IOError("Cannot access the file {0}".format(path))
+
+        words = {}
+        # This allows us to read line by line without buffering the
+        # entire file
+        with codecs.open(path, "r", "utf-8-sig", "utf-8") as f:
+            for line in f:
+                for w in line.split():
+                    w = w.strip()  # Remove whitespace
+                    w = w.strip(trim_string)  # Extra chars to trim
+                    w = w.lower()  # Case insensitive
                 words[w] = words.get(w, 0) + 1
-    return _interpret(words)
+        return sorted(words.iteritems(),
+                      key=operator.itemgetter(1),
+                      reverse=True)
 
+    @staticmethod
+    def words_needed(words, percent, total_words):
+        num_words = 0
+        partial = 0.0
+        for w in words:
+            partial += 100.0*float(w[1])/float(total_words)
+            num_words += 1
+            if partial > percent:
+                break
+        return num_words
 
-def _interpret(words_dict):
-     words = sorted(words_dict.iteritems(), key=operator.itemgetter(1), reverse=True)
-     return words
+    def summary(self):
+        total_words = sum(r[1] for r in self.result)
+        total_unique_words = len(self.result)
+        print("Number of words: {0}".format(total_words))
+        print("Number of unique words: {0}".format(total_unique_words))
+        print("Top ten:")
+        for i in range(10):
+            w = self.result[i]
+            print("{0} - {1} - {2} - {3}%".format(i, w[0], w[1], 100.0*float(w[1])/float(total_words)))
+        print("\nNumber of words needed to understand 50% of the text: {0}".format(Zipf.words_needed(self.result, 50.0, total_words)))
+        print("\nNumber of words needed to understand 60% of the text: {0}".format(Zipf.words_needed(self.result, 60.0, total_words)))
+        print("\nNumber of words needed to understand 80% of the text: {0}".format(Zipf.words_needed(self.result, 80.0, total_words)))
+    
 
-def summary(result):
-    total_words = sum(r[1] for r in result)
-    total_unique_words = len(result)
-    print("Number of words: {0}".format(total_words))
-    print("Number of unique words: {0}".format(total_unique_words))
-    print("Top ten:")
-    for i in range(10):
-        w = result[i]
-        print("{0} - {1} - {2} - {3}%".format(i, w[0], w[1], 100.0*float(w[1])/float(total_words)))
+    def plot(self):
+        x = range(100)
+        y = [word[1] for word in self.result[:100]]
+        plt.xkcd()
+        plt.plot(x, y)
+
+    def show(self):
+        plt.show()
+
+    def save(self, path):
+        plt.savefig(path)
