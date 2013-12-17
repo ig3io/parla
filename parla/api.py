@@ -47,6 +47,7 @@ class Zipf(object):
 
     def summary(self):
         total_words = sum(r[1] for r in self.words)
+        self.total_words = total_words
         total_unique_words = len(self.words)
         print("Number of words: {0}".format(total_words))
         print("Number of unique words: {0}".format(total_unique_words))
@@ -60,10 +61,15 @@ class Zipf(object):
     
 
     def plot(self):
+        # plt.xkcd()
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+
         x = range(100)
-        y = [word[1] for word in self.words[:100]]
-        plt.xkcd()
-        plt.plot(x, y)
+        y = [100.0*float(word[1])/float(self.total_words) for word in self.words[:100]]
+        line, = ax.plot(x, y)
+        for i in (0, 1, 2, 3, 10, 20, 40, 50):
+            ax.annotate(self.words[i][0], xy=(x[i], y[i]))
 
     def show(self):
         plt.show()

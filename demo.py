@@ -8,8 +8,7 @@ import matplotlib.pyplot as plt
 
 
 def main():
-    p = parla.Zipf("./assets/cat_0.txt")
-    # p = parla.Zipf("./assets/quixote.txt")
+    p = parla.Zipf("./assets/quixote.txt")
     #with codecs.open("./result.txt", "wb", "utf-8") as f:
     #    for r in p.words:
     #        f.write(u"{0}: {1}\n".format(r[0], r[1]))
